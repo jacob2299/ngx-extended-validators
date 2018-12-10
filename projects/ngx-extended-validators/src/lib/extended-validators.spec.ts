@@ -313,4 +313,32 @@ describe('ExtendedValidators', () => {
 
     expect(form.valid).toBeTruthy();
   });
+
+  it('form should be invalid when the date is not on the given date', () => {
+    let form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.date('03-04-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeFalsy();
+
+    form = formBuilder.group({
+      date: ['2018-05-06', ExtendedValidators.date('2018-04-03')]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is on the given date', () => {
+    let form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.date('06-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+
+    form = formBuilder.group({
+      date: ['2018-05-06', ExtendedValidators.date('2018-05-06')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
 });
