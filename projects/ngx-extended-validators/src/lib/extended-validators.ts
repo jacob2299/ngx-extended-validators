@@ -236,4 +236,23 @@ export class ExtendedValidators extends Validators {
       return { 'requiredUnlessOtherFieldExists': { currentValue: currentControl.value, otherValue: otherControl.value } };
     };
   }
+
+  /**
+   * Check if the current field is on the given day
+   * @param expectedDate
+   * @param format
+   */
+  public static date(expectedDate: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | undefined => {
+      if (!moment(control.value, format).isValid() || !moment(expectedDate, format).isValid()) {
+        return { 'date': { error: 'Invalid date', currentValue: control.value, expectedValue: expectedDate } };
+      }
+
+      if (moment(control.value, format).isSame(moment(expectedDate, format))) {
+        return undefined;
+      }
+
+      return { 'date': { currentValue: control.value, expectedValue: expectedDate } };
+    };
+  }
 }
