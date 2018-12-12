@@ -27,6 +27,10 @@ export class ExtendedValidators extends Validators {
    */
   public static confirmPassword(passwordField: string, confirmPasswordField: string): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
+      if (isEmptyInputValue(group.get(passwordField).value) || isEmptyInputValue(group.get(confirmPasswordField).value)) {
+        return undefined;
+      }
+
       if (group.get(passwordField).value === group.get(confirmPasswordField).value) {
         return undefined;
       }
