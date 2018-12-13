@@ -316,4 +316,33 @@ export class ExtendedValidators extends Validators {
       return { 'dateAfter': { currentValue: control.value, expectedValue: date } };
     };
   }
+
+  public static beforeToday(format: string = 'YYYY-MM-DD', reverse: boolean = false): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | undefined => {
+      const today = moment();
+      const currentDate = moment(control.value, format);
+
+      if (!areValidDates(currentDate)) {
+        return invalidDateError('beforeToday', control.value);
+      }
+
+      if (currentDate.isBefore(today)) {
+        if (reverse) {
+          return { 'afterToday': { currentValue: control.value } };
+        }
+
+        return undefined;
+      }
+
+      if (reverse) {
+        return undefined;
+      }
+
+      return { 'beforeToday': { currentValue: control.value } };
+    };
+  }
+
+  public static afterToday(format: string = 'YYYY-MM-DD'): ValidatorFn {
+    return this.beforeToday(format, true);
+  }
 }
