@@ -1,5 +1,6 @@
 import { FormBuilder } from '@angular/forms';
 import { ExtendedValidators } from './extended-validators';
+import * as moment from 'moment';
 
 describe('ExtendedValidators', () => {
   let formBuilder: FormBuilder;
@@ -369,6 +370,46 @@ describe('ExtendedValidators', () => {
   it('form should be valid when the date is after the given date', () => {
     const form = formBuilder.group({
       date: ['06-05-2018', ExtendedValidators.dateAfter('01-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not before today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.add(1, 'd'), ExtendedValidators.beforeToday()]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is before today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.subtract(1, 'd'), ExtendedValidators.beforeToday()]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not after today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.subtract(1, 'd'), ExtendedValidators.afterToday()]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is after today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.add(1, 'd'), ExtendedValidators.afterToday()]
     });
 
     expect(form.valid).toBeTruthy();
