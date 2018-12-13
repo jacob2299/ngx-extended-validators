@@ -265,7 +265,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['value']
-    }, { validators: ExtendedValidators.requiredIfOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredIfFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeFalsy();
   });
@@ -274,7 +274,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['']
-    }, { validators: ExtendedValidators.requiredIfOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredIfFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });
@@ -283,7 +283,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: ['value'],
       otherField: ['value']
-    }, { validators: ExtendedValidators.requiredIfOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredIfFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });
@@ -292,7 +292,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['']
-    }, { validators: ExtendedValidators.requiredUnlessOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredUnlessFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeFalsy();
   });
@@ -301,7 +301,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['value']
-    }, { validators: ExtendedValidators.requiredUnlessOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredUnlessFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });
@@ -310,7 +310,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: ['value'],
       otherField: ['']
-    }, { validators: ExtendedValidators.requiredUnlessOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredUnlessFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });

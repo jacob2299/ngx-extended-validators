@@ -225,7 +225,7 @@ export class ExtendedValidators extends Validators {
    * @param currentField
    * @param otherField
    */
-  public static requiredIfOtherFieldExists(currentField: string, otherField: string): ValidatorFn {
+  public static requiredIfFieldExists(currentField: string, otherField: string): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
       const currentControl = group.get(currentField);
       const otherControl = group.get(otherField);
@@ -238,7 +238,7 @@ export class ExtendedValidators extends Validators {
         return undefined;
       }
 
-      return { 'requiredIfOtherFieldExists': { currentValue: currentControl.value, otherValue: otherControl.value } };
+      return { 'requiredIfFieldExists': { currentValue: currentControl.value, otherValue: otherControl.value } };
     };
   }
 
@@ -247,7 +247,7 @@ export class ExtendedValidators extends Validators {
    * @param currentField
    * @param otherField
    */
-  public static requiredUnlessOtherFieldExists(currentField: string, otherField: string): ValidatorFn {
+  public static requiredUnlessFieldExists(currentField: string, otherField: string): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
       const currentControl = group.get(currentField);
       const otherControl = group.get(otherField);
@@ -260,7 +260,7 @@ export class ExtendedValidators extends Validators {
         return undefined;
       }
 
-      return { 'requiredUnlessOtherFieldExists': { currentValue: currentControl.value, otherValue: otherControl.value } };
+      return { 'requiredUnlessFieldExists': { currentValue: currentControl.value, otherValue: otherControl.value } };
     };
   }
 
