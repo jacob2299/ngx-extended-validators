@@ -283,6 +283,11 @@ export class ExtendedValidators extends Validators {
     };
   }
 
+  /**
+   * Check if the current date is before the given date
+   * @param date
+   * @param format
+   */
   public static dateBefore(date: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
       const currentDate = moment(control.value, format);
@@ -300,6 +305,11 @@ export class ExtendedValidators extends Validators {
     };
   }
 
+  /**
+   * Check if the current date is after the given date
+   * @param date
+   * @param format
+   */
   public static dateAfter(date: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
       const currentDate = moment(control.value, format);
@@ -317,6 +327,11 @@ export class ExtendedValidators extends Validators {
     };
   }
 
+  /**
+   * Check if the current date is before today's date
+   * @param format
+   * @param reverse
+   */
   public static beforeToday(format: string = 'YYYY-MM-DD', reverse: boolean = false): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
       const today = moment();
@@ -342,6 +357,10 @@ export class ExtendedValidators extends Validators {
     };
   }
 
+  /**
+   * Check if the current date is after today's date
+   * @param format
+   */
   public static afterToday(format: string = 'YYYY-MM-DD'): ValidatorFn {
     return this.beforeToday(format, true);
   }
