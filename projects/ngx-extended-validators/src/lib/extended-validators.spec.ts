@@ -341,4 +341,36 @@ describe('ExtendedValidators', () => {
 
     expect(form.valid).toBeTruthy();
   });
+
+  it('form should be invalid when the date is not before the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateBefore('01-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is before the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateBefore('10-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not after the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateAfter('10-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is after the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateAfter('01-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
 });

@@ -1,6 +1,7 @@
 import { FormGroup, ValidationErrors, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as moment_ from 'moment';
 import { DateRange } from './interfaces/date-range.interface';
+import { Moment } from 'moment';
 const moment = moment_;
 
 const days = {
@@ -16,6 +17,20 @@ const days = {
 function isEmptyInputValue(value: any): boolean {
   // we don't check for string here so it also works with arrays
   return value == null || value.length === 0;
+}
+
+function areValidDates(...dates: Moment[]): boolean {
+  for (const date of dates) {
+    if (!date.isValid) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function invalidDateError(validator: string, ...dates: string[]): ValidationErrors {
+  return { [validator]: { error: 'Invalid date', dates: dates.join(', ') } };
 }
 
 // @dynamic
@@ -57,6 +72,10 @@ export class ExtendedValidators extends Validators {
    */
   public static dayOfWeek(day: string, format: string = 'YYYY-MM-DD', locale: string = 'nl'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
+      if (!areValidDates(moment(control.value, format))) {
+        return invalidDateError('dayOfWeek', control.value);
+      }
+
       const daynumber = days[day];
       if (moment(control.value, format).locale(locale).weekday() === daynumber) {
         return undefined;
@@ -78,8 +97,12 @@ export class ExtendedValidators extends Validators {
       const from = moment(range.from, format);
       const to = moment(range.to, format);
 
-      if (!value.isValid || !from.isValid() || !to.isValid()) {
-        return { 'dateRange': { error: 'Invalid date', value, from, to } };
+      if (!areValidDates(value, from, to)) {
+        if (reverse) {
+          return invalidDateError('notInDateRange', control.value, range.from, range.to);
+        }
+
+        return invalidDateError('dateRange', control.value, range.from, range.to);
       }
 
       if (value.isBetween(from.subtract(1, 'd'), to.add(1, 'd'))) {
@@ -248,8 +271,8 @@ export class ExtendedValidators extends Validators {
    */
   public static date(expectedDate: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
-      if (!moment(control.value, format).isValid() || !moment(expectedDate, format).isValid()) {
-        return { 'date': { error: 'Invalid date', currentValue: control.value, expectedValue: expectedDate } };
+      if (!areValidDates(moment(control.value, format), moment(expectedDate, format))) {
+        return invalidDateError('date', control.value, expectedDate);
       }
 
       if (moment(control.value, format).isSame(moment(expectedDate, format))) {
@@ -257,6 +280,40 @@ export class ExtendedValidators extends Validators {
       }
 
       return { 'date': { currentValue: control.value, expectedValue: expectedDate } };
+    };
+  }
+
+  public static dateBefore(date: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | undefined => {
+      const currentDate = moment(control.value, format);
+      const expectedDate = moment(date, format);
+
+      if (!areValidDates(currentDate, expectedDate)) {
+        return invalidDateError('dateBefore', control.value, date);
+      }
+
+      if (currentDate.isBefore(expectedDate)) {
+        return undefined;
+      }
+
+      return { 'dateBefore': { currentValue: control.value, expectedValue: date } };
+    };
+  }
+
+  public static dateAfter(date: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | undefined => {
+      const currentDate = moment(control.value, format);
+      const expectedDate = moment(date, format);
+
+      if (!areValidDates(currentDate, expectedDate)) {
+        return invalidDateError('dateBefore', control.value, date);
+      }
+
+      if (currentDate.isAfter(expectedDate)) {
+        return undefined;
+      }
+
+      return { 'dateAfter': { currentValue: control.value, expectedValue: date } };
     };
   }
 }
