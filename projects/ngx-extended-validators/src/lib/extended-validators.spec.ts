@@ -414,4 +414,23 @@ describe('ExtendedValidators', () => {
 
     expect(form.valid).toBeTruthy();
   });
+
+  it('form should be invalid when the value is not a boolean', () => {
+    const form = formBuilder.group({
+      value: [3, ExtendedValidators.boolean()]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the value is a boolean', () => {
+    let form = formBuilder.group({
+      value: [true, ExtendedValidators.boolean()],
+      value2: [false, ExtendedValidators.boolean()],
+      value3: [1, ExtendedValidators.boolean()],
+      value4: [0, ExtendedValidators.boolean()]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
 });

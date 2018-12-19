@@ -364,4 +364,14 @@ export class ExtendedValidators extends Validators {
   public static afterToday(format: string = 'YYYY-MM-DD'): ValidatorFn {
     return this.beforeToday(format, true);
   }
+
+  public static boolean(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | undefined => {
+      if (control.value === true || control.value === false || control.value === 1 || control.value === 0) {
+        return undefined;
+      }
+
+      return { 'boolean': { currentValue: control.value } };
+    };
+  }
 }
