@@ -365,6 +365,9 @@ export class ExtendedValidators extends Validators {
     return this.beforeToday(format, true);
   }
 
+  /**
+   * Check if the current value is a boolean
+   */
   public static boolean(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
       if (control.value === true || control.value === false || control.value === 1 || control.value === 0) {
