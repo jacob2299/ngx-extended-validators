@@ -16,9 +16,9 @@
   ],
   "bugs": "https://github.com/jacob2299/ngx-extended-validators/issues",
   "peerDependencies": {
-    "@angular/common": "^7.1.0",
-    "@angular/core": "^7.1.0",
-    "@angular/forms": "^7.1.0"
+    "@angular/common": "^6.1.0",
+    "@angular/core": "^6.1.0",
+    "@angular/forms": "^6.1.0"
   },
   "dependencies": {
     "moment": "^2.22.2"
