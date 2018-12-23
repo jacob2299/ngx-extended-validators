@@ -1,0 +1,20 @@
+
+sudo: required
+addons:
+  chrome: stable
+
+language: node_js
+node_js:
+  - "10"
+
+branches:
+  only:
+    - develop
+    - master
+
+before_script:
+  - npm install -g @angular/cli
+
+script:
+  - ng build NgxExtendedValidators
+  - ng test NgxExtendedValidators
