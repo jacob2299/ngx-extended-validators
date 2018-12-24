@@ -17,5 +17,6 @@ before_script:
   - npm install -g @angular/cli
 
 script:
+  - ng lint
   - ng build NgxExtendedValidators
-  - ng test NgxExtendedValidators
+  - ng test NgxExtendedValidators --watch=false --browsers=ChromeHeadless
