@@ -16,6 +16,6 @@
     "triple-equals": [
       false,
       "allow-null-check"
-    ],
+    ]
   }
 }

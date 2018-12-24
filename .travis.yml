@@ -1,0 +1,22 @@
+
+sudo: required
+addons:
+  chrome: stable
+
+language: node_js
+node_js:
+  - "stable"
+
+branches:
+  only:
+    - develop
+    - master
+
+before_script:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - npm install -g @angular/cli
+
+script:
+  - ng lint NgxExtendedValidators --fix
+  - ng build NgxExtendedValidators
+  - ng test NgxExtendedValidators --watch=false --browsers=ChromeHeadless

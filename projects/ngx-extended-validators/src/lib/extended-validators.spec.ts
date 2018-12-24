@@ -1,5 +1,6 @@
 import { FormBuilder } from '@angular/forms';
 import { ExtendedValidators } from './extended-validators';
+import * as moment from 'moment';
 
 describe('ExtendedValidators', () => {
   let formBuilder: FormBuilder;
@@ -264,7 +265,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['value']
-    }, { validators: ExtendedValidators.requiredIfOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredIfFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeFalsy();
   });
@@ -273,7 +274,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['']
-    }, { validators: ExtendedValidators.requiredIfOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredIfFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });
@@ -282,7 +283,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: ['value'],
       otherField: ['value']
-    }, { validators: ExtendedValidators.requiredIfOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredIfFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });
@@ -291,7 +292,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['']
-    }, { validators: ExtendedValidators.requiredUnlessOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredUnlessFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeFalsy();
   });
@@ -300,7 +301,7 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: [''],
       otherField: ['value']
-    }, { validators: ExtendedValidators.requiredUnlessOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredUnlessFieldExists('currentField', 'otherField') });
 
     expect(form.valid).toBeTruthy();
   });
@@ -309,7 +310,126 @@ describe('ExtendedValidators', () => {
     const form = formBuilder.group({
       currentField: ['value'],
       otherField: ['']
-    }, { validators: ExtendedValidators.requiredUnlessOtherFieldExists('currentField', 'otherField') });
+    }, { validators: ExtendedValidators.requiredUnlessFieldExists('currentField', 'otherField') });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not on the given date', () => {
+    let form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.date('03-04-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeFalsy();
+
+    form = formBuilder.group({
+      date: ['2018-05-06', ExtendedValidators.date('2018-04-03')]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is on the given date', () => {
+    let form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.date('06-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+
+    form = formBuilder.group({
+      date: ['2018-05-06', ExtendedValidators.date('2018-05-06')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not before the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateBefore('01-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is before the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateBefore('10-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not after the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateAfter('10-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is after the given date', () => {
+    const form = formBuilder.group({
+      date: ['06-05-2018', ExtendedValidators.dateAfter('01-05-2018', 'DD-MM-YYYY')]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not before today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.add(1, 'd'), ExtendedValidators.beforeToday()]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is before today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.subtract(1, 'd'), ExtendedValidators.beforeToday()]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the date is not after today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.subtract(1, 'd'), ExtendedValidators.afterToday()]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the date is after today', () => {
+    const today = moment();
+
+    const form = formBuilder.group({
+      date: [today.add(1, 'd'), ExtendedValidators.afterToday()]
+    });
+
+    expect(form.valid).toBeTruthy();
+  });
+
+  it('form should be invalid when the value is not a boolean', () => {
+    const form = formBuilder.group({
+      value: [3, ExtendedValidators.boolean()]
+    });
+
+    expect(form.valid).toBeFalsy();
+  });
+
+  it('form should be valid when the value is a boolean', () => {
+    const form = formBuilder.group({
+      value: [true, ExtendedValidators.boolean()],
+      value2: [false, ExtendedValidators.boolean()],
+      value3: [1, ExtendedValidators.boolean()],
+      value4: [0, ExtendedValidators.boolean()]
+    });
 
     expect(form.valid).toBeTruthy();
   });
