@@ -1,7 +1,7 @@
 # ngx-extended-validators 
 [![Build Status](https://travis-ci.org/jacob2299/ngx-extended-validators.svg?branch=develop)](https://travis-ci.org/jacob2299/ngx-extended-validators)
 
-This is an extension on the angular 6+ validators
+> This is an extension on the angular 6+ validators
 
 ## Available validators
 
