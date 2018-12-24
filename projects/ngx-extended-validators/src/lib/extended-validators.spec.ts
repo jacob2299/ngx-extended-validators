@@ -424,7 +424,7 @@ describe('ExtendedValidators', () => {
   });
 
   it('form should be valid when the value is a boolean', () => {
-    let form = formBuilder.group({
+    const form = formBuilder.group({
       value: [true, ExtendedValidators.boolean()],
       value2: [false, ExtendedValidators.boolean()],
       value3: [1, ExtendedValidators.boolean()],

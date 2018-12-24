@@ -36,9 +36,9 @@ function invalidDateError(validator: string, ...dates: string[]): ValidationErro
 // @dynamic
 export class ExtendedValidators extends Validators {
   /**
-   * Check if 2 passwords are the same
-   * @param passwordField
-   * @param confirmPasswordField
+   * @description Check if 2 passwords are the same
+   * @param passwordField The password field
+   * @param confirmPasswordField The confirm password field
    */
   public static confirmPassword(passwordField: string, confirmPasswordField: string): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
@@ -55,7 +55,7 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the day is on the given day of the week
+   * @description Check if the day is on the given day of the week
    *
    * Accepted values:
    * mon
@@ -66,9 +66,9 @@ export class ExtendedValidators extends Validators {
    * sat
    * sun
    *
-   * @param day
-   * @param format
-   * @param locale
+   * @param day The day of the week
+   * @param format The format example: DD-MM-YYYY
+   * @param locale The locale example: nl
    */
   public static dayOfWeek(day: string, format: string = 'YYYY-MM-DD', locale: string = 'nl'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
@@ -86,10 +86,10 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the date is in the given date range
-   * @param range
-   * @param format
-   * @param reverse
+   * @description Check if the date is in the given date range
+   * @param range The date range
+   * @param format The format example: DD-MM-YYYY
+   * @param reverse Validator in reverse
    */
   public static dateRange(range: DateRange, format: string = 'YYYY-MM-DD', reverse: boolean = false): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
@@ -122,62 +122,62 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the date is not in the given date range
-   * @param range
-   * @param format
+   * @description Check if the date is not in the given date range
+   * @param range The date range
+   * @param format The format DD-MM-YYYY
    */
   public static notInDateRange(range: DateRange, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return this.dateRange(range, format, true);
   }
 
   /**
-   * Check if the value is a number
+   * @description Check if the value is a number
    */
   public static number(): ValidatorFn {
     return ExtendedValidators.pattern(/^[0-9]*$/);
   }
 
   /**
-   * Check if the value is a float
+   * @description Check if the value is a float
    */
   public static float(): ValidatorFn {
     return ExtendedValidators.pattern(/^[0-9]+\.[0-9]+$/);
   }
 
   /**
-   * Check if the value is a valid dutch phone number
+   * @description Check if the value is a valid dutch phone number
    */
   public static dutchPhone(): ValidatorFn {
     return ExtendedValidators.pattern(/^(((0)[1-9]{2}[0-9][-]?[1-9][0-9]{5})|((\\+31|0|0031)[1-9][0-9][-]?[1-9][0-9]{6}))$/);
   }
 
   /**
-   * Check if the value is a valid dutch mobile phone number
+   * @description Check if the value is a valid dutch mobile phone number
    */
   public static dutchMobilePhone(): ValidatorFn {
     return ExtendedValidators.pattern(/^(((\+31|0|0031)6){1}[1-9]{1}[0-9]{7})$/i);
   }
 
   /**
-   * Check if the value is a valid dutch postalcode
+   * @description Check if the value is a valid dutch postalcode
    */
   public static dutchPostalCode(): ValidatorFn {
     return ExtendedValidators.pattern(/^[1-9][0-9]{3}[\s]?[A-Za-z]{2}$/i);
   }
 
   /**
-   * Check if the value is a valid iban
+   * @description Check if the value is a valid iban
    */
   public static iban(): ValidatorFn {
     return ExtendedValidators.pattern(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$/);
   }
 
   /**
-   * Make the current field required if the other field equals the expected value
-   * @param currentField
-   * @param otherField
-   * @param expectedValue
-   * @param strict
+   * @description Make the current field required if the other field equals the expected value
+   * @param currentField The current field
+   * @param otherField The other field
+   * @param expectedValue The expected value
+   * @param strict Should the comparison be strict
    */
   public static requiredIf(currentField: string, otherField: string, expectedValue: any, strict: boolean = false): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
@@ -197,11 +197,11 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Make the current field required unless the other field equals the expected value
-   * @param currentField
-   * @param otherField
-   * @param expectedValue
-   * @param strict
+   * @description Make the current field required unless the other field equals the expected value
+   * @param currentField The current field
+   * @param otherField The other field
+   * @param expectedValue The expected value
+   * @param strict Should the comparison be strict
    */
   public static requiredUnless(currentField: string, otherField: string, expectedValue: any, strict: boolean = false): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
@@ -221,9 +221,9 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Make the current field required if the other field is not empty
-   * @param currentField
-   * @param otherField
+   * @description Make the current field required if the other field is not empty
+   * @param currentField The current field
+   * @param otherField The other field
    */
   public static requiredIfFieldExists(currentField: string, otherField: string): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
@@ -243,9 +243,9 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Make the current field required unless the other field is not empty
-   * @param currentField
-   * @param otherField
+   * @description Make the current field required unless the other field is not empty
+   * @param currentField The current field
+   * @param otherField The other field
    */
   public static requiredUnlessFieldExists(currentField: string, otherField: string): ValidatorFn {
     return (group: FormGroup): ValidationErrors | undefined => {
@@ -265,9 +265,9 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the current field is on the given day
-   * @param expectedDate
-   * @param format
+   * @description Check if the current field is on the given day
+   * @param expectedDate The expected date
+   * @param format The format example: DD-MM-YYYY
    */
   public static date(expectedDate: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
@@ -284,9 +284,9 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the current date is before the given date
-   * @param date
-   * @param format
+   * @description Check if the current date is before the given date
+   * @param date The expected date
+   * @param format The format example: DD-MM-YYYY
    */
   public static dateBefore(date: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
@@ -306,9 +306,9 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the current date is after the given date
-   * @param date
-   * @param format
+   * @description Check if the current date is after the given date
+   * @param date The expected date
+   * @param format The format example: DD-MM-YYYY
    */
   public static dateAfter(date: string, format: string = 'YYYY-MM-DD'): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
@@ -328,9 +328,9 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the current date is before today's date
-   * @param format
-   * @param reverse
+   * @description Check if the current date is before today's date
+   * @param format The format example: DD-MM-YYYY
+   * @param reverse Validator in reverse
    */
   public static beforeToday(format: string = 'YYYY-MM-DD', reverse: boolean = false): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
@@ -358,15 +358,15 @@ export class ExtendedValidators extends Validators {
   }
 
   /**
-   * Check if the current date is after today's date
-   * @param format
+   * @description Check if the current date is after today's date
+   * @param format The format example: DD-MM-YYYY
    */
   public static afterToday(format: string = 'YYYY-MM-DD'): ValidatorFn {
     return this.beforeToday(format, true);
   }
 
   /**
-   * Check if the current value is a boolean
+   * @description Check if the current value is a boolean
    */
   public static boolean(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | undefined => {
